@@ -1,28 +1,28 @@
-/* --- 1. DATOS INICIALES --- */
+/* --- 1. DATOS INICIALES (URLs extraídas de tu HTML original) --- */
 const initialCards = [
   {
     name: "Valle de Yosemite",
-    link: "https://amazonaws.com",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
   },
   {
     name: "Lago Louise",
-    link: "https://amazonaws.com",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg",
   },
   {
     name: "Montañas Calvas",
-    link: "https://amazonaws.com",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_bald-mountains.jpg",
   },
   {
     name: "Latemar",
-    link: "https://amazonaws.com",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_latemar.jpg",
   },
   {
     name: "Parque Nacional de la Vanoise",
-    link: "https://amazonaws.com",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_vanoise.jpg",
   },
   {
     name: "Lago di Braies",
-    link: "https://amazonaws.com",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago.jpg",
   },
 ];
 
@@ -32,7 +32,7 @@ const initialCards = [
 const cardsList = document.querySelector(".cards__list");
 const cardTemplate = document.querySelector("#card-template").content;
 
-// Perfil
+// Perfil (Rutas locales actualizadas para evitar errores en GitHub Pages)
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
 const editButton = document.querySelector(".profile__edit-button");
@@ -60,7 +60,7 @@ const popupImage = imagePopup.querySelector(".popup__image");
 const popupCaption = imagePopup.querySelector(".popup__caption");
 const closeImageButton = imagePopup.querySelector(".popup__close");
 
-/* --- 3. FUNCIONES GENERALES (Abrir/Cerrar Modales) --- */
+/* --- 3. FUNCIONES GENERALES --- */
 
 function openModal(modal) {
   modal.classList.add("popup_is-opened");
@@ -70,7 +70,7 @@ function closeModal(modal) {
   modal.classList.remove("popup_is-opened");
 }
 
-/* --- 4. FUNCIONES DE TARJETAS (Lógica y Creación) --- */
+/* --- 4. FUNCIONES DE TARJETAS --- */
 
 function handleLikeButtonClick(evt) {
   evt.target.classList.toggle("card__like-button_active");
@@ -88,12 +88,11 @@ function getCardElement(data) {
   const likeButton = cardElement.querySelector(".card__like-button");
   const deleteButton = cardElement.querySelector(".card__delete-button");
 
-  // Configuración de imagen y texto
   cardImage.src = data.link;
   cardImage.alt = data.name;
   cardTitle.textContent = data.name;
 
-  // Evento: Abrir Visualizador de Imagen
+  // Abrir imagen en grande
   cardImage.addEventListener("click", () => {
     popupImage.src = data.link;
     popupImage.alt = data.name;
@@ -101,7 +100,6 @@ function getCardElement(data) {
     openModal(imagePopup);
   });
 
-  // Eventos: Like y Eliminar
   likeButton.addEventListener("click", handleLikeButtonClick);
   deleteButton.addEventListener("click", handleDeleteButtonClick);
 
@@ -113,7 +111,7 @@ function renderCard(name, link, container) {
   container.prepend(cardElement);
 }
 
-/* --- 5. MANEJADORES DE FORMULARIOS (Submit Handlers) --- */
+/* --- 5. MANEJADORES DE FORMULARIOS --- */
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
@@ -129,7 +127,7 @@ function handleCardFormSubmit(evt) {
   newCardForm.reset();
 }
 
-/* --- 6. DETECTORES DE EVENTOS --- */
+/* --- 6. EVENTOS --- */
 
 // Perfil
 editButton.addEventListener("click", () => {

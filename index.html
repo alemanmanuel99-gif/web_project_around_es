@@ -2,56 +2,55 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <meta content="ie=edge" http-equiv="X-UA-Compatible" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Around The U.S.</title>
-    <link href="./pages/index.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./pages/index.css" />
   </head>
   <body class="page">
     <div class="page__content">
       <header class="header page__section">
         <img
+          src="./images/logo.svg"
           alt="Logotipo Around The U.S."
           class="logo header__logo"
-          src="./images/logo.svg"
         />
       </header>
       <main class="content">
         <section class="profile page__section">
-          <img class="profile__image" src="./images/avatar.jpg" alt="Avatar" />
+          <img src="./images/avatar.jpg" alt="Avatar" class="profile__image" />
           <div class="profile__info">
             <h1 class="profile__title">Jacques Cousteau</h1>
             <button
-              aria-label="Editar perfil"
               class="profile__edit-button"
               type="button"
+              aria-label="Editar perfil"
             ></button>
             <p class="profile__description">Explorador</p>
           </div>
           <button
-            aria-label="Agregar tarjeta"
             class="profile__add-button"
             type="button"
+            aria-label="Agregar tarjeta"
           ></button>
         </section>
-
         <section class="cards page__section">
           <ul class="cards__list">
-            <!-- AQUÍ EL TEMPLATE: El molde para las tarjetas -->
+            <!-- Molde para las tarjetas dinámicas -->
             <template id="card-template">
               <li class="card">
-                <img class="card__image" src="" alt="" />
+                <img src="" alt="" class="card__image" />
                 <button
-                  aria-label="Eliminar tarjeta"
                   class="card__delete-button"
                   type="button"
+                  aria-label="Eliminar tarjeta"
                 ></button>
                 <div class="card__description">
                   <h2 class="card__title"></h2>
                   <button
-                    aria-label="Botón Me gusta"
                     class="card__like-button"
                     type="button"
+                    aria-label="Botón Me gusta"
                   ></button>
                 </div>
               </li>
@@ -59,18 +58,17 @@
           </ul>
         </section>
       </main>
-
       <footer class="footer page__section">
         <p class="footer__copyright">© 2025 Around The U.S.</p>
       </footer>
 
-      <!-- Popups -->
+      <!-- Popup: Editar Perfil -->
       <div class="popup" id="edit-popup">
         <div class="popup__content">
           <button
-            aria-label="Cerrar"
             class="popup__close"
             type="button"
+            aria-label="Cerrar"
           ></button>
           <h3 class="popup__title">Editar perfil</h3>
           <form class="popup__form" id="edit-profile-form">
@@ -91,12 +89,13 @@
         </div>
       </div>
 
+      <!-- Popup: Nuevo Lugar -->
       <div class="popup" id="new-card-popup">
         <div class="popup__content">
           <button
-            aria-label="Cerrar"
             class="popup__close"
             type="button"
+            aria-label="Cerrar"
           ></button>
           <h3 class="popup__title">Nuevo lugar</h3>
           <form class="popup__form" id="new-card-form">
@@ -119,14 +118,15 @@
         </div>
       </div>
 
+      <!-- Popup: Imagen Grande -->
       <div class="popup" id="image-popup">
         <div class="popup__content popup__content_content_image">
           <button
-            aria-label="Cerrar"
             class="popup__close"
             type="button"
+            aria-label="Cerrar"
           ></button>
-          <img alt="" class="popup__image" src="#" />
+          <img src="#" alt="" class="popup__image" />
           <p class="popup__caption"></p>
         </div>
       </div>
