@@ -27,18 +27,14 @@ const initialCards = [
 ];
 
 /* --- 2. SELECTORES DEL DOM --- */
-
-// Contenedores y Plantilla
 const cardsList = document.querySelector(".cards__list");
 const cardTemplate = document.querySelector("#card-template").content;
 
-// Perfil (Rutas locales actualizadas para evitar errores en GitHub Pages)
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
 const editButton = document.querySelector(".profile__edit-button");
 const addCardButton = document.querySelector(".profile__add-button");
 
-// Modal de Perfil
 const editPopup = document.querySelector("#edit-popup");
 const editForm = editPopup.querySelector("#edit-profile-form");
 const nameInput = editForm.querySelector(".popup__input_type_name");
@@ -47,20 +43,18 @@ const descriptionInput = editForm.querySelector(
 );
 const closeEditButton = editPopup.querySelector(".popup__close");
 
-// Modal de Nueva Tarjeta
 const newCardPopup = document.querySelector("#new-card-popup");
 const newCardForm = newCardPopup.querySelector("#new-card-form");
 const cardNameInput = newCardForm.querySelector(".popup__input_type_card-name");
 const cardLinkInput = newCardForm.querySelector(".popup__input_type_url");
 const closeAddCardButton = newCardPopup.querySelector(".popup__close");
 
-// Modal de Imagen (Visualización)
 const imagePopup = document.querySelector("#image-popup");
 const popupImage = imagePopup.querySelector(".popup__image");
 const popupCaption = imagePopup.querySelector(".popup__caption");
 const closeImageButton = imagePopup.querySelector(".popup__close");
 
-/* --- 3. FUNCIONES GENERALES --- */
+/* --- 3. FUNCIONES GENERALES Y VALIDACIÓN --- */
 
 function openModal(modal) {
   modal.classList.add("popup_is-opened");
@@ -68,6 +62,60 @@ function openModal(modal) {
 
 function closeModal(modal) {
   modal.classList.remove("popup_is-opened");
+}
+
+const showInputError = (formElement, inputElement, errorMessage) => {
+  const errorElement = formElement.querySelector(
+    `.${inputElement.id}-input-error`,
+  );
+  inputElement.classList.add("popup__input_type_error");
+  errorElement.textContent = errorMessage;
+  errorElement.classList.add("popup__input-error_active");
+};
+
+const hideInputError = (formElement, inputElement) => {
+  const errorElement = formElement.querySelector(
+    `.${inputElement.id}-input-error`,
+  );
+  inputElement.classList.remove("popup__input_type_error");
+  errorElement.textContent = "";
+  errorElement.classList.remove("popup__input-error_active");
+};
+
+const checkInputValidity = (formElement, inputElement) => {
+  if (!inputElement.validity.valid) {
+    showInputError(formElement, inputElement, inputElement.validationMessage);
+  } else {
+    hideInputError(formElement, inputElement);
+  }
+};
+
+function hasInvalidInput(inputList) {
+  return Array.from(inputList).some((input) => {
+    return !input.validity.valid;
+  });
+}
+
+function toggleButtonState(inputList, buttonElement) {
+  if (hasInvalidInput(inputList)) {
+    buttonElement.disabled = true;
+  } else {
+    buttonElement.disabled = false;
+  }
+}
+
+function setEventListeners(formElement) {
+  const inputs = formElement.querySelectorAll(".popup__input");
+  const submitButton = formElement.querySelector(".popup__button");
+
+  toggleButtonState(inputs, submitButton);
+
+  inputs.forEach((input) => {
+    input.addEventListener("input", () => {
+      checkInputValidity(formElement, input);
+      toggleButtonState(inputs, submitButton);
+    });
+  });
 }
 
 /* --- 4. FUNCIONES DE TARJETAS --- */
@@ -92,7 +140,6 @@ function getCardElement(data) {
   cardImage.alt = data.name;
   cardTitle.textContent = data.name;
 
-  // Abrir imagen en grande
   cardImage.addEventListener("click", () => {
     popupImage.src = data.link;
     popupImage.alt = data.name;
@@ -125,6 +172,10 @@ function handleCardFormSubmit(evt) {
   renderCard(cardNameInput.value, cardLinkInput.value, cardsList);
   closeModal(newCardPopup);
   newCardForm.reset();
+
+  const inputs = newCardForm.querySelectorAll(".popup__input");
+  const submitButton = newCardForm.querySelector(".popup__button");
+  toggleButtonState(inputs, submitButton);
 }
 
 /* --- 6. EVENTOS --- */
@@ -133,20 +184,51 @@ function handleCardFormSubmit(evt) {
 editButton.addEventListener("click", () => {
   nameInput.value = profileTitle.textContent;
   descriptionInput.value = profileDescription.textContent;
+
+  const inputs = editPopup.querySelectorAll(".popup__input");
+  const submitButton = editPopup.querySelector(".popup__button");
+  toggleButtonState(inputs, submitButton);
+
   openModal(editPopup);
 });
+
 closeEditButton.addEventListener("click", () => closeModal(editPopup));
 editForm.addEventListener("submit", handleProfileFormSubmit);
 
 // Nueva Tarjeta
-addCardButton.addEventListener("click", () => openModal(newCardPopup));
+addCardButton.addEventListener("click", () => {
+  const inputs = newCardPopup.querySelectorAll(".popup__input");
+  const submitButton = newCardPopup.querySelector(".popup__button");
+  toggleButtonState(inputs, submitButton);
+
+  openModal(newCardPopup);
+});
+
 closeAddCardButton.addEventListener("click", () => closeModal(newCardPopup));
 newCardForm.addEventListener("submit", handleCardFormSubmit);
 
 // Visualizador de Imagen
 closeImageButton.addEventListener("click", () => closeModal(imagePopup));
 
+/* >>> NUEVO: CIERRE POR CLIC EN LA SUPERPOSICIÓN <<< */
+// Seleccionamos los tres modales que existen en la página
+const popups = document.querySelectorAll(".popup");
+
+popups.forEach((popupElement) => {
+  popupElement.addEventListener("click", (evt) => {
+    // Si el clic fue exactamente en el fondo oscuro (.popup) y no en la caja blanca
+    if (evt.target === evt.currentTarget) {
+      closeModal(popupElement);
+    }
+  });
+});
+/* >>> FIN DEL BLOQUE NUEVO <<< */
+
 /* --- 7. INICIALIZACIÓN --- */
+
 initialCards.forEach((cardData) => {
   renderCard(cardData.name, cardData.link, cardsList);
 });
+
+setEventListeners(editForm);
+setEventListeners(newCardForm);
