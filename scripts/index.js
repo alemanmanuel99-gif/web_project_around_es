@@ -1,3 +1,10 @@
+/* --- IMPORTACIONES MODULARES --- */
+import {
+  setEventListeners,
+  toggleButtonState,
+  resetValidation,
+} from "./validate.js";
+
 /* --- 1. DATOS INICIALES (URLs extraídas de tu HTML original) --- */
 const initialCards = [
   {
@@ -54,74 +61,42 @@ const popupImage = imagePopup.querySelector(".popup__image");
 const popupCaption = imagePopup.querySelector(".popup__caption");
 const closeImageButton = imagePopup.querySelector(".popup__close");
 
-/* --- 3. FUNCIONES GENERALES Y VALIDACIÓN --- */
+/* --- 3. FUNCIONES GENERALES DE MODALES --- */
+
+function handleEscClose(evt) {
+  if (evt.key === "Escape") {
+    const openedPopup = document.querySelector(".popup_is-opened");
+    if (openedPopup) {
+      closeModal(openedPopup);
+    }
+  }
+}
 
 function openModal(modal) {
   modal.classList.add("popup_is-opened");
+  document.addEventListener("keydown", handleEscClose);
+
+  const formInModal = modal.querySelector(".popup__form");
+  if (formInModal) {
+    const submitButton = formInModal.querySelector(".popup__button");
+    submitButton.disabled = true;
+  }
 }
 
 function closeModal(modal) {
   modal.classList.remove("popup_is-opened");
-}
+  document.removeEventListener("keydown", handleEscClose);
 
-const showInputError = (formElement, inputElement, errorMessage) => {
-  const errorElement = formElement.querySelector(
-    `.${inputElement.id}-input-error`,
-  );
-  inputElement.classList.add("popup__input_type_error");
-  errorElement.textContent = errorMessage;
-  errorElement.classList.add("popup__input-error_active");
-};
-
-const hideInputError = (formElement, inputElement) => {
-  const errorElement = formElement.querySelector(
-    `.${inputElement.id}-input-error`,
-  );
-  inputElement.classList.remove("popup__input_type_error");
-  errorElement.textContent = "";
-  errorElement.classList.remove("popup__input-error_active");
-};
-
-const checkInputValidity = (formElement, inputElement) => {
-  if (!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, inputElement.validationMessage);
-  } else {
-    hideInputError(formElement, inputElement);
+  const formInModal = modal.querySelector(".popup__form");
+  if (formInModal) {
+    resetValidation(formInModal);
   }
-};
-
-function hasInvalidInput(inputList) {
-  return Array.from(inputList).some((input) => {
-    return !input.validity.valid;
-  });
-}
-
-function toggleButtonState(inputList, buttonElement) {
-  if (hasInvalidInput(inputList)) {
-    buttonElement.disabled = true;
-  } else {
-    buttonElement.disabled = false;
-  }
-}
-
-function setEventListeners(formElement) {
-  const inputs = formElement.querySelectorAll(".popup__input");
-  const submitButton = formElement.querySelector(".popup__button");
-
-  toggleButtonState(inputs, submitButton);
-
-  inputs.forEach((input) => {
-    input.addEventListener("input", () => {
-      checkInputValidity(formElement, input);
-      toggleButtonState(inputs, submitButton);
-    });
-  });
 }
 
 /* --- 4. FUNCIONES DE TARJETAS --- */
 
 function handleLikeButtonClick(evt) {
-  evt.target.classList.toggle("card__like-button_active");
+  evt.target.classList.toggle("card__like-button_is-active");
 }
 
 function handleDeleteButtonClick(evt) {
@@ -172,23 +147,14 @@ function handleCardFormSubmit(evt) {
   renderCard(cardNameInput.value, cardLinkInput.value, cardsList);
   closeModal(newCardPopup);
   newCardForm.reset();
-
-  const inputs = newCardForm.querySelectorAll(".popup__input");
-  const submitButton = newCardForm.querySelector(".popup__button");
-  toggleButtonState(inputs, submitButton);
 }
 
-/* --- 6. EVENTOS --- */
+/* --- 6. DETECTORES DE EVENTOS --- */
 
 // Perfil
 editButton.addEventListener("click", () => {
   nameInput.value = profileTitle.textContent;
   descriptionInput.value = profileDescription.textContent;
-
-  const inputs = editPopup.querySelectorAll(".popup__input");
-  const submitButton = editPopup.querySelector(".popup__button");
-  toggleButtonState(inputs, submitButton);
-
   openModal(editPopup);
 });
 
@@ -197,10 +163,6 @@ editForm.addEventListener("submit", handleProfileFormSubmit);
 
 // Nueva Tarjeta
 addCardButton.addEventListener("click", () => {
-  const inputs = newCardPopup.querySelectorAll(".popup__input");
-  const submitButton = newCardPopup.querySelector(".popup__button");
-  toggleButtonState(inputs, submitButton);
-
   openModal(newCardPopup);
 });
 
@@ -210,19 +172,15 @@ newCardForm.addEventListener("submit", handleCardFormSubmit);
 // Visualizador de Imagen
 closeImageButton.addEventListener("click", () => closeModal(imagePopup));
 
-/* >>> NUEVO: CIERRE POR CLIC EN LA SUPERPOSICIÓN <<< */
-// Seleccionamos los tres modales que existen en la página
+// Cierre por clic en la superposición
 const popups = document.querySelectorAll(".popup");
-
 popups.forEach((popupElement) => {
   popupElement.addEventListener("click", (evt) => {
-    // Si el clic fue exactamente en el fondo oscuro (.popup) y no en la caja blanca
     if (evt.target === evt.currentTarget) {
       closeModal(popupElement);
     }
   });
 });
-/* >>> FIN DEL BLOQUE NUEVO <<< */
 
 /* --- 7. INICIALIZACIÓN --- */
 
