@@ -31,6 +31,18 @@
   cursor: pointer;
 }
 
+.popup__button-disabled {
+  background-color: white;
+  color: gray;
+  border: 1px solid gray;
+}
+
+.popup__button-disabled:hover {
+  color: gray;
+  background-color: white;
+  cursor: not-allowed;
+}
+
 .popup__close {
   width: 35px;
   height: 35px;
@@ -76,10 +88,6 @@
   margin-bottom: 10px;
 }
 
-.popup__input:last-of-type {
-  margin-bottom: 0;
-}
-
 .popup__title {
   margin: 0;
   font-size: 24px;
@@ -104,7 +112,8 @@
 
 .popup__image {
   max-width: 100%;
-  object-fit: cover;
+  max-height: 75vh;
+  object-fit: contain;
 }
 
 .popup__caption {
@@ -115,6 +124,25 @@
   left: 0;
   top: calc(100% + 10px);
   margin: 0;
+}
+
+.form__input-type-error {
+  border-bottom-color: red;
+}
+
+.popup__input-error {
+  display: block;
+  min-height: 14px;
+  color: red;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.popup__input-error_active {
+  opacity: 1;
 }
 
 @media screen and (max-width: 544px) {

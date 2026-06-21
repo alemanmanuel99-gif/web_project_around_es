@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "module": "none",
+    "rootDir": "./src",
+    "outFile": "./public/index.js",
+    "strict": true,
+    "ignoreDeprecations": "6.0"
+  },
+  "files": [
+    "./src/utils/constants.ts",
+    "./src/components/FormValidator.ts",
+    "./src/components/Card.ts",
+    "./src/components/Section.ts",
+    "./src/components/Popup.ts",
+    "./src/components/PopupWithImage.ts",
+    "./src/components/PopupWithForm.ts",
+    "./src/components/UserInfo.ts",
+    "./src/index.ts"
+  ]
+}

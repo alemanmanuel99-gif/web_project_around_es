@@ -12,6 +12,7 @@
       href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoq1Jz_vdHHovzNbuGPx9DfmkLGUOZ3NGvaTJflWbLLw&s=10"
     />
   </head>
+
   <body class="page">
     <div class="page__content">
       <header class="header page__section">
@@ -41,8 +42,7 @@
         </section>
         <section class="cards page__section">
           <ul class="cards__list">
-            <!-- Molde para las tarjetas dinámicas -->
-            <template id="card-template">
+            <template id="card__template">
               <li class="card">
                 <img src="" alt="" class="card__image" />
                 <button
@@ -66,8 +66,6 @@
       <footer class="footer page__section">
         <p class="footer__copyright">© 2025 Around The U.S.</p>
       </footer>
-
-      <!-- Popup: Editar Perfil -->
       <div class="popup" id="edit-popup">
         <div class="popup__content">
           <button
@@ -78,37 +76,40 @@
           <h3 class="popup__title">Editar perfil</h3>
           <form class="popup__form" id="edit-profile-form">
             <input
-              id="profile-name"
-              class="popup__input popup__input_type_name"
-              name="name"
-              placeholder="Nombre"
               type="text"
-              required
+              name="name"
+              class="popup__input popup__input_type_name"
+              placeholder="Nombre"
+              id="name-input"
               minlength="2"
               maxlength="40"
+              required
             />
-            <span class="profile-name-input-error popup__input-error"></span>
-
+            <span class="name-input-error popup__input-error"></span>
             <input
-              id="profile-description"
               class="popup__input popup__input_type_description"
               name="description"
               placeholder="Acerca de mí"
               type="text"
-              required
+              id="description-input"
               minlength="2"
               maxlength="200"
+              required
             />
-            <span
-              class="profile-description-input-error popup__input-error"
-            ></span>
-
+            <span class="description-input-error popup__input-error"></span>
+            <input
+              type="url"
+              name="profile-image"
+              class="popup__input popup__input_type_profile-image"
+              placeholder="Profile image"
+              id="profile-image-input"
+              required
+            />
+            <span class="profile-image-input-error popup__input-error"></span>
             <button class="button popup__button" type="submit">Guardar</button>
           </form>
         </div>
       </div>
-
-      <!-- Popup: Nuevo Lugar -->
       <div class="popup" id="new-card-popup">
         <div class="popup__content">
           <button
@@ -119,33 +120,29 @@
           <h3 class="popup__title">Nuevo lugar</h3>
           <form class="popup__form" id="new-card-form">
             <input
-              id="card-title"
-              class="popup__input popup__input_type_card-name"
-              name="place-name"
-              placeholder="Título"
-              required
               type="text"
+              name="place-name"
+              id="place-name-input"
+              class="popup__input popup__input_type_card-name"
+              placeholder="Título"
               minlength="2"
               maxlength="30"
-            />
-            <span class="card-title-input-error popup__input-error"></span>
-
-            <input
-              id="card-url"
-              class="popup__input popup__input_type_url"
-              name="link"
-              placeholder="URL de la imagen"
               required
-              type="url"
             />
-            <span class="card-url-input-error popup__input-error"></span>
-
+            <span class="place-name-input-error popup__input-error"></span>
+            <input
+              type="url"
+              name="link"
+              id="link-input"
+              class="popup__input popup__input_type_url"
+              placeholder="Enlace a la imagen"
+              required
+            />
+            <span class="link-input-error popup__input-error"></span>
             <button class="button popup__button" type="submit">Crear</button>
           </form>
         </div>
       </div>
-
-      <!-- Popup: Imagen Grande -->
       <div class="popup" id="image-popup">
         <div class="popup__content popup__content_content_image">
           <button
@@ -158,6 +155,6 @@
         </div>
       </div>
     </div>
-    <script type="module" src="./scripts/index.js"></script>
+    <script src="./index.js" defer></script>
   </body>
 </html>
